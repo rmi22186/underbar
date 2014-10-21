@@ -62,7 +62,6 @@ var _ = {};
       return "not an Array or Object" //otherwise return "not an array or object"
     };
 
-
   // Returns the index at which value can be found in the array, or -1 if value
   // is not present in the array.
   _.indexOf = function(array, target){
@@ -101,15 +100,32 @@ var _ = {};
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array) {
-  };
+  var results = [];
+  for (var i = 0; i < array.length; i++) {
+    if (_.indexOf(results, array[i]) === -1) {
+      results.push(array[i]);
+    }
+  }
+  return results;
+};
 
-
+  
   // Return the results of applying an iterator to each element.
   _.map = function(collection, iterator) {
     // map() is a useful primitive iteration function that works a lot
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
+    var results = [];
+
+    for (var i = 0; i < collection.length; i++) {
+      results.push(iterator(collection[i]));
+
+    }
+    return results;
   };
+
+
+
 
   /*
    * TIP: map is really handy when you want to transform an array of
