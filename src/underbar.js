@@ -166,7 +166,6 @@ var _ = {};
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array) {     
-
     var results = [];
     _.each(array, function(item) {
       if (_.indexOf(results, item) === -1) {
@@ -196,13 +195,20 @@ var _ = {};
     // map() is a useful primitive iteration function that works a lot
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
-    
-    var results = [];
+    var mapped = [];
     _.each(collection, function(item) {
-      results.push(iterator(item))
+      mapped.push(iterator(item));
     })
-    return results;
-    };
+    return mapped;
+  }    
+
+
+    // var results = [];
+    // _.each(collection, function(item) {
+    //   results.push(iterator(item))
+    // })
+    // return results;
+    // };
 
     // ---------------------------------------------------
     //  Alternative Implementation
@@ -234,17 +240,35 @@ var _ = {};
   // Calls the method named by functionOrKey on each value in the list.
   // Note: you will nead to learn a bit about .apply to complete this.
   _.invoke = function(collection, functionOrKey, args) {
-
     if (typeof functionOrKey === 'function') {
-      return _.map(collection, function(item) {             // are map and invoke the same wrt functions?
-        return functionOrKey.apply(item, args);
-      })} 
-      else if (typeof functionOrKey === 'string') {
-        return _.map(collection, function(item) {
-          return item[functionOrKey]();
-        })
-      }
-    };
+      return _.map(collection, function(item) {
+        return functionOrKey.apply(item, args)
+      })
+    }
+    else if (typeof functionOrKey === 'string') {
+      return _.map(collection, function(item) {
+        return item[functionOrKey](args)
+      })
+    }
+};
+
+
+
+
+
+
+
+
+    // if (typeof functionOrKey === 'function') {
+    //   return _.map(collection, function(item) {             // are map and invoke the same wrt functions?
+    //     return functionOrKey.apply(item, args);
+    //   })} 
+    //   else if (typeof functionOrKey === 'string') {
+    //     return _.map(collection, function(item) {
+    //       return item[functionOrKey]();
+    //     })
+    //   }
+    // };
 
   //   return (typeof functionOrKey === 'function') ?
   //     function() {
