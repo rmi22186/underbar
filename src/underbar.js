@@ -157,7 +157,6 @@ var _ = {};
     //     return !test(item);
     //   });
     // };
-
     return _.filter (collection, function(item) {
       return !(test(item))                                // hard to visualize
     });
@@ -242,7 +241,7 @@ var _ = {};
   _.invoke = function(collection, functionOrKey, args) {
     if (typeof functionOrKey === 'function') {
       return _.map(collection, function(item) {
-        return functionOrKey.apply(item, args)
+        return functionOrKey.apply(item)
       })
     }
     else if (typeof functionOrKey === 'string') {
@@ -251,14 +250,6 @@ var _ = {};
       })
     }
 };
-
-
-
-
-
-
-
-
     // if (typeof functionOrKey === 'function') {
     //   return _.map(collection, function(item) {             // are map and invoke the same wrt functions?
     //     return functionOrKey.apply(item, args);
@@ -297,30 +288,67 @@ var _ = {};
   //     return total + number;
   //   }, 0); // should be 6
   _.reduce = function(collection, iterator, accumulator) {
+    if (accumulator === undefined) {
+      accumulator = collection[0]
+    }
+    
+    _.each(collection, function(item) {
+      accumulator = iterator(accumulator, item)
+    })
+
+    return accumulator;
   };
 
   // Determine if the array or object contains a given value (using `===`).
   _.contains = function(collection, target) {
     // TIP: Many iteration problems can be most easily expressed in
     // terms of reduce(). Here's a freebie to demonstrate!
-    return _.reduce(collection, function(wasFound, item) {
-      if (wasFound) {
-        return true;
+    return _.reduce(collection, function(wasFound, item) {  // wasFound is the accumulator
+      if (wasFound) {                                       // and by default is false (from 3rd argument = 'false' below)
+        return true;                                        // until wasFound is true
       }
-      return item === target;
-    }, false);
+      return item === target;                               // answer to return item === target becomes accumulator
+    }, false);                                              // sets default value of accumulator (wasFound) to false
+    
+    // ---------------------------------------------------
+    //  Alternative Implementation
+    //  var wasFound = false
+    //    _.each(collection, function(item) {  
+    //    if (item === target && wasFound === false) {
+    //      wasFound = true;
+    //       }
+    //    })
+    //  return wasFound
+    // ---------------------------------------------------    
+  
   };
 
 
   // Determine whether all of the elements match a truth test.
+  // _.every = function(collection, iterator) {
+  //   // TIP: Try re-using reduce() here.
+  //     return _.reduce(collection, function(accumulator, item) {
+  //       iterator = iterator || function() { return _.identity(item) }
+  //       return !!((iterator(item)) && (accumulator))
+  //   }, true)
+
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
-  };
+      return _.reduce(collection, function(accumulator, item) {
+      iterator = iterator || function() {return _.identity(item)}
+      return ((!!iterator(item) && accumulator))}
+      , true);
+
+    };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    return !_.every(collection, function(item){
+       return iterator ? !iterator(item) : !item
+      }
+    )
   };
 
 
@@ -343,11 +371,37 @@ var _ = {};
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
-  };
+ 
+    _.each(arguments, function(item) {
+      for (var z in item) {
+      obj[z] = item[z]
+      }
+      })
+    return obj; 
+}
+
+
+// for (var x = 0; x < arguments.length; x++) {
+    //   for (var z in arguments[x]) {
+    //     obj[z] = arguments[x][z];
+    //   }
+    // }
+    // return obj
+    // };
+   
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    for (var x = 0; x < arguments.length; x++) {
+        for (var z in arguments[x]) {
+          if (typeof obj[z] === "undefined") {
+            obj[z] = arguments[x][z]
+          }
+        }
+    }
+    return obj;
+
   };
 
 
@@ -398,6 +452,7 @@ var _ = {};
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    
   };
 
 
