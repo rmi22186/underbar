@@ -437,10 +437,6 @@ describe('once', function() {
 
     increment();
     increment();
-    increment();
-    increment();
-    increment();
-    increment();
 
     expect(num).to.equal(1);
   });

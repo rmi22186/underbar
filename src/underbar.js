@@ -241,15 +241,16 @@ var _ = {};
   _.invoke = function(collection, functionOrKey, args) {
     if (typeof functionOrKey === 'function') {
       return _.map(collection, function(item) {
-        return functionOrKey.apply(item)
+        return functionOrKey.apply(item)                        // args here is optional?
       })
     }
     else if (typeof functionOrKey === 'string') {
       return _.map(collection, function(item) {
-        return item[functionOrKey](args)
+        return item[functionOrKey](args)                        // args here is optional? 
       })
     }
 };
+
     // if (typeof functionOrKey === 'function') {
     //   return _.map(collection, function(item) {             // are map and invoke the same wrt functions?
     //     return functionOrKey.apply(item, args);
@@ -443,7 +444,19 @@ var _ = {};
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
-  };
+    var result = {};
+    return function(key) {
+        if (key in result) {
+          return result[key]
+        }
+        else {
+          result[key] = func.apply(this, arguments);
+        }
+        return result[key]
+  }
+};
+
+
 
   // Delays a function for the given number of milliseconds, and then calls
   // it with the arguments supplied.
@@ -451,8 +464,17 @@ var _ = {};
   // The arguments for the original function are passed after the wait
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
-  _.delay = function(func, wait) {
-    
+    _.delay = function(func, wait, args) {
+    var argsArr = [];
+    _.each(arguments,function(item,index){
+      if (index > 1) {
+        argsArr.push(item);
+      }
+    });
+    setTimeout(function(){
+      func.apply(this,argsArr);
+      },
+      wait);
   };
 
 
@@ -467,6 +489,15 @@ var _ = {};
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+    var copyofArray = array.slice();
+    var shuffledArray = [];
+
+    while (copyofArray.length > 0) {
+      var element = copyofArray.splice(Math.floor(Math.random()*copyofArray.length), 1)
+      shuffledArray.push(element[0]);
+    }
+    
+    return shuffledArray;
   };
 
 
