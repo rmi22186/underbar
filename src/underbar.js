@@ -321,9 +321,8 @@ var _ = {};
     //    })
     //  return wasFound
     // ---------------------------------------------------    
-  
-  };
 
+  };
 
   // Determine whether all of the elements match a truth test.
   // _.every = function(collection, iterator) {
@@ -339,9 +338,7 @@ var _ = {};
       iterator = iterator || function() {return _.identity(item)}
       return ((!!iterator(item) && accumulator))}
       , true);
-
     };
-
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
@@ -372,24 +369,21 @@ var _ = {};
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
- 
-    _.each(arguments, function(item) {
-      for (var z in item) {
-      obj[z] = item[z]
+//     _.each(arguments, function(item) {
+//       for (var z in item) {
+//       obj[z] = item[z]
+//       }
+//       })
+//     return obj; 
+// }
+  
+    for (var i = 0; i < arguments.length; i++ ) {
+      for (var key in arguments[i]) {
+        obj[key] = arguments[i][key];
       }
-      })
-    return obj; 
-}
-
-
-// for (var x = 0; x < arguments.length; x++) {
-    //   for (var z in arguments[x]) {
-    //     obj[z] = arguments[x][z];
-    //   }
-    // }
-    // return obj
-    // };
-   
+    }
+    return obj;
+   }
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
@@ -464,7 +458,7 @@ var _ = {};
   // The arguments for the original function are passed after the wait
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
-    _.delay = function(func, wait, args) {
+    _.delay = function(func, wait) {
     var argsArr = [];
     _.each(arguments,function(item,index){
       if (index > 1) {
@@ -478,6 +472,13 @@ var _ = {};
   };
 
 
+//or var args = Array.prototype.slice.call(arguments, 2); instead of 
+// var argsArr = [];
+//     _.each(arguments,function(item,index){
+//       if (index > 1) {
+//         argsArr.push(item);
+//       }
+//     });
   /**
    * ADVANCED COLLECTION OPERATIONS
    * ==============================
