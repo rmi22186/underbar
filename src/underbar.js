@@ -515,15 +515,22 @@ var _ = {};
   _.sortBy = function(collection, iterator) {
     var sorted = [];
 
-    // var compareToNextItem = function() {}
-    
-    if Array.isArray(collection) {
-      if (iterator === 'string') {
-        for (var i = 0; i < collection.length; i++) {
-          collection[i][iterator]
-        }
-      }
-    }
+    // if Array.isArray(collection) {
+    //   for (var i = 0; i < collection.length-1; i++) {
+    //     iterator.sort
+    //     if (iterator[i] < iterator[i+1]) {
+    //       sorted.push[i]
+    //     }
+    //   }
+    // }
+
+
+
+    // // if iterator === 'string' {                    //if iterator is a string, collection is an object
+    // //   for (x in collection) {
+    // //     x[string]
+    // //   }
+    // // }
 
     return sorted;
 
@@ -534,7 +541,19 @@ var _ = {};
   //
   // Example:
   // _.zip(['a','b','c','d'], [1,2,3]) returns [['a',1], ['b',2], ['c',3], ['d',undefined]]
+  
   _.zip = function() {
+    var zipped = [];
+    
+    for (var i = 0; i < arguments.length; i++ ) {
+      zipped.push([]);
+      for (var x = 0; x < arguments.length; x++) {  
+        
+        zipped[i][x] = arguments[x][i]
+      }
+    }
+
+    return zipped;
   };
 
   // Takes a multidimensional array and converts it to a one-dimensional array.
