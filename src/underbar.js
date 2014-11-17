@@ -241,7 +241,7 @@ var _ = {};
   _.invoke = function(collection, functionOrKey, args) {
     if (typeof functionOrKey === 'function') {
       return _.map(collection, function(item) {
-        return functionOrKey.apply(item)                        // args here is optional?
+        return functionOrKey.apply(item)(args)                     // args here is optional?
       })
     }
     else if (typeof functionOrKey === 'string') {
@@ -468,7 +468,7 @@ var _ = {};
     setTimeout(function(){
       func.apply(this,argsArr);
       },
-      wait);
+      wait)
   };
 
 
@@ -513,6 +513,20 @@ var _ = {};
   // of that string. For example, _.sortBy(people, 'name') should sort
   // an array of people by their name.
   _.sortBy = function(collection, iterator) {
+    var sorted = [];
+
+    // var compareToNextItem = function() {}
+    
+    if Array.isArray(collection) {
+      if (iterator === 'string') {
+        for (var i = 0; i < collection.length; i++) {
+          collection[i][iterator]
+        }
+      }
+    }
+
+    return sorted;
+
   };
 
   // Zip together two or more arrays with elements of the same index
