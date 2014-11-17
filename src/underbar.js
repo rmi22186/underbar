@@ -541,15 +541,22 @@ var _ = {};
   //
   // Example:
   // _.zip(['a','b','c','d'], [1,2,3]) returns [['a',1], ['b',2], ['c',3], ['d',undefined]]
-  
+
   _.zip = function() {
     var zipped = [];
-    
+    var longestArray = [];
+
     for (var i = 0; i < arguments.length; i++ ) {
+      if (arguments[i].length > longestArray.length) {
+        longestArray = arguments[i]
+      }
+    }
+
+    for (var i = 0; i < longestArray.length; i++ ) {
       zipped.push([]);
       for (var x = 0; x < arguments.length; x++) {  
         
-        zipped[i][x] = arguments[x][i]
+        zipped[i][x] = arguments[x][i];
       }
     }
 
@@ -561,6 +568,28 @@ var _ = {};
   //
   // Hint: Use Array.isArray to check if something is an array
   _.flatten = function(nestedArray, result) {
+    result = result || []
+
+    // var flattenRecur = function(nestedArray) {
+    //   for (var i = 0; i < nestedArray.length; i++) {
+    //     if (Array.isArray(nestedArray[i])) {
+    //       flattenRecur(nestedArray[i])
+    //     } else {
+    //     result.push(nestedArray[i])
+    //     }
+    //   }
+    // }    
+    // flattenRecur(nestedArray);
+
+    _.each(nestedArray, function(item) {
+      if (Array.isArray(item)) {
+        _.flatten(item, result) 
+      } else {
+      result.push(item);
+    }
+    })
+    // }
+    return result;
   };
 
   // Takes an arbitrary number of arrays and produces an array that contains
