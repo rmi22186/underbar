@@ -33,34 +33,75 @@ var _ = {};
   // Return an array of the first n elements of an array. If n is undefined,
   // return just the first element.
   _.first = function(array, n) {
-    return n === undefined ? array[0] : array.slice(0, n);
+
+
+    return n === undefined ? array[0] : array.slice(0,n)
   };
+
+
+    // ---------------------------------------------------
+    //  Alternative Implementation
+
+    //  if (n === undefined) {
+    //    return array[0]
+    //  }
+    //    else {
+    //      return array.slice(0,n);
+    //    }
+    //  };
+    // ---------------------------------------------------
 
   // Like first, but for the last elements. If n is undefined, return just the
   // last element.
   _.last = function(array, n) {
-    return n === undefined ? array[array.length-1] : (n > array.length) ? array.slice(0,n) : array.slice(array.length-n, array.length) // if undefined, return  the last array, if not undefined and n is greater than array length, return all elements of array, otherwise, return elements (starting at array.length-n) until the end of the array
-        };
 
-  // Call iterator(value, key, collection) for each element of collection.
-  // Accepts both arrays and objects.
-  //
-  // Note: _.each does not have a return value, but rather simply runs the
-  // iterator function over each item in the input collection.
+    return n === undefined ? array[array.length-1] : (n > array.length) ? array.slice(0,array.length) : array.slice(array.length-n, array.length)};
+  
+    // ---------------------------------------------------
+    //  Alternative Implementation
+    //  if (n === undefined) {
+    //    return array[array.length-1]
+    //  } else if (n > array.length) {
+    //    return array.slice(0,n)
+    //  }
+    //  else {
+    //     return array.slice(array.length-n,array.length)
+    //  }};
+    // ---------------------------------------------------
+
+    // Call iterator(value, key, collection) for each element of collection.
+    // Accepts both arrays and objects.
+    //
+    // Note: _.each does not have a return value, but rather simply runs the
+    // iterator function over each item in the input collection.
   _.each = function(collection, iterator) {
-    if (Array.isArray(collection)) { //if collection is an array
-      for (var i = 0; i < collection.length; i++) { //set up of array
-        iterator(collection[i], i, collection); // call the array item by index, the index, then print the full array
-      }
-    }
-    else if (typeof collection === 'object') { //otherwise, if this is an object
-      for (var prop in collection) { //set up of iteration through object
-        iterator(collection[prop], prop, collection) //iterate on each key 
-      }
-    }
-    else
-      return "not an Array or Object" //otherwise return "not an array or object"
-    };
+
+    // if (Array.isArray(collection)) {                  // if collection is an array
+    //   for (var i = 0; i < collection.length; i++) {   // iterate formula for array 
+    //     iterator(collection[i], i, collection)        // iterate over each array element
+    //   }
+    // }
+    // else if (collection.length === undefined) {       //else if collection is an object
+    //   for (var x in collection) {                       // iterate formula for object
+    //     iterator(collection[x], x, collection)          // iterate over each object key
+    //   }
+    // }
+    // };
+
+    // --------------------------------------------------- 
+    //  Alternative Implementation
+    Array.isArray(collection) ? 
+       function() {
+         for (var i = 0; i < collection.length; i++) { 
+       iterator(collection[i], i, collection) 
+       }}() :                                               // why doesn't a semicolon after the () work? is it because it's before a ":"
+      
+       function() {
+         for (var x in collection) { 
+       iterator(collection[x], x, collection) 
+       }}()
+     }
+    // ---------------------------------------------------
 
   // Returns the index at which value can be found in the array, or -1 if value
   // is not present in the array.
@@ -68,64 +109,84 @@ var _ = {};
     // TIP: Here's an example of a function that needs to iterate, which we've
     // implemented for you. Instead of using a standard `for` loop, though,
     // it uses the iteration helper `each`, which you will need to write.
-    var result = -1;
-
+    var result = -1
     _.each(array, function(item, index) {
       if (item === target && result === -1) {
-        result = index;
-      }
-    });
+        result = index }
+      });
+    return result
+    };
 
-    return result;
-  };
+  //   var result = -1
+  //   _.each(array, function(item, index) {               // sends callback function to each, with item and index as arguments to the iterator
+  //     if (item === target && result === -1) {           // if an item is equal to the target, then it's true && true
+  //       result = index;                                 // modify result to equal index...
+  //     }});
+  //     return result;                                    // ...which is returned
+  // };
+
+  // ---------------------------------------------------
+  //   Alternative Implementation
+  //   var result = -1;
+  //   for (var i = 0; i < array.length; i++) {
+  //     if (array[i] === target && result === -1) {
+  //       result = i;
+  //     }}
+  //   return result;
+  // };
+  // ---------------------------------------------------
 
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
-    var result = []; //create an empty array for positive items to be added to
-    
-    _.each(collection, function(item) { // pass collection as the array, item is the callback argument 
-      if (test(item)) {result.push(item)} //test if the item is true in the callback function, if true, push item
-    });
-      return result;
+
+    var result = [];                                    // create an empty array
+    _.each(collection, function(item) {                 // pass callback function to each, with item as argument to the iterator
+      if (test(item)) {                                 // for each item, if it passes the test...
+        result.push(item)                               // ...push the item to the result array...
+      }
+    })
+    return result;                                      /// ...which is returned
   };
+
 
   // Return all elements of an array that don't pass a truth test.
   _.reject = function(collection, test) {
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
-<<<<<<< HEAD
     //   return _.filter(collection, function(item) {
     //     return !test(item);
     //   });
     // };
     return _.filter (collection, function(item) {
       return !(test(item))                                // hard to visualize
-=======
-    return _.filter (collection, function(args) {
-      return !(test(args))
->>>>>>> parent of cd7aff9... completed section 1 through invoke!
     });
   };
 
+
   // Produce a duplicate-free version of the array.
-<<<<<<< HEAD
   _.uniq = function(array) {     
     var results = [];
     _.each(array, function(item) {
       if (_.indexOf(results, item) === -1) {
         results.push(item)
       }
-=======
-  _.uniq = function(array) {
-  var results = [];
-  for (var i = 0; i < array.length; i++) {
-    if (_.indexOf(results, array[i]) === -1) {
-      results.push(array[i]);
->>>>>>> parent of cd7aff9... completed section 1 through invoke!
     }
-  }
-  return results;
-};
+    );
+    return results;
+  };
+
+    // ---------------------------------------------------
+    //   Alternative Implementation
+    //   _.uniq = function(array) {
+    //    var results = [];
+    //    for (var i = 0; i < array.length; i++ ) {
+    //      if (_.indexOf(results, array[i]) === -1) {
+    //        results.push(array[i])
+    //      }
+    //     }
+    //    return results;
+    //   };
+    // ---------------------------------------------------
 
   
   // Return the results of applying an iterator to each element.
@@ -133,7 +194,6 @@ var _ = {};
     // map() is a useful primitive iteration function that works a lot
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
-<<<<<<< HEAD
     var mapped = [];
     _.each(collection, function(item) {
       mapped.push(iterator(item));
@@ -148,18 +208,14 @@ var _ = {};
     // })
     // return results;
     // };
-=======
-    var results = [];
 
-    for (var i = 0; i < collection.length; i++) {
-      results.push(iterator(collection[i]));
-
-    }
-    return results;
-  };
-
->>>>>>> parent of cd7aff9... completed section 1 through invoke!
-
+    // ---------------------------------------------------
+    //  Alternative Implementation
+    //  var results = [];
+    //    for (var i = 0; i < collection.length; i++) {
+    //  results.push(iterator(collection[i]));
+    //  }
+    // ---------------------------------------------------
 
 
   /*
@@ -175,7 +231,7 @@ var _ = {};
     // TIP: map is really handy when you want to transform an array of
     // values into a new array of values. _.pluck() is solved for you
     // as an example of this.
-    return _.map(collection, function(item){
+    return _.map(collection, function(item){                // does this has to be an array of objects? 
       return item[key];
     });
   };
@@ -183,7 +239,6 @@ var _ = {};
   // Calls the method named by functionOrKey on each value in the list.
   // Note: you will nead to learn a bit about .apply to complete this.
   _.invoke = function(collection, functionOrKey, args) {
-<<<<<<< HEAD
     if (typeof functionOrKey === 'function') {
       return _.map(collection, function(item) {
         return functionOrKey.apply(item)(args)                     // args here is optional?
@@ -219,9 +274,6 @@ var _ = {};
   // }() 
 
   // };
-=======
-  };
->>>>>>> parent of cd7aff9... completed section 1 through invoke!
 
   // Reduces an array or object to a single value by repetitively calling
   // iterator(previousValue, item) for each item. previousValue should be
