@@ -241,7 +241,7 @@ var _ = {};
   _.invoke = function(collection, functionOrKey, args) {
     if (typeof functionOrKey === 'function') {
       return _.map(collection, function(item) {
-        return functionOrKey.apply(item)(args)                     // args here is optional?
+        return functionOrKey.apply(item,args)                     // args here is optional?
       })
     }
     else if (typeof functionOrKey === 'string') {
@@ -250,6 +250,8 @@ var _ = {};
       })
     }
 };
+
+
 
     // if (typeof functionOrKey === 'function') {
     //   return _.map(collection, function(item) {             // are map and invoke the same wrt functions?
