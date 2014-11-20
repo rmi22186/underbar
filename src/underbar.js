@@ -515,28 +515,45 @@ var _ = {};
   // of that string. For example, _.sortBy(people, 'name') should sort
   // an array of people by their name.
   _.sortBy = function(collection, iterator) {
-    var sorted = [];
+    var numUndefined = []
+    
+    _.each(collection, function(item) {
+      if iterator(item) === undefined) {
+        numUndefined.push(collection.splice(i, 1)[0]);
+      }
+    }
 
-    // if Array.isArray(collection) {
-    //   for (var i = 0; i < collection.length-1; i++) {
-    //     iterator.sort
-    //     if (iterator[i] < iterator[i+1]) {
-    //       sorted.push[i]
-    //     }
-    //   }
-    // }
+    for (var i = 0; i < collection.length; i++) {
+      var target = collection[i];
+      for (var j = i+1; j < collection.length; j++) {
+        if (typeof iterator === 'function') {
+          if (iterator(collection[i] <= (iterator(collection[j])))) {
+            collection[i] = collection[i]
+          } else {
+            var swap = collection[i];
+            collection[i] = collection[j]
+            collection[j] = swap
+          }
+        }
+        if (typeof iterator === 'string') {
+          if ((collection[i][iterator] <= ((collection[j][iterator])))) {
+            collection[i] = collection[i]
+          } else {
+            var swap = collection[i];
+            collection[i] = collection[j]
+            collection[j] = swap
+          }  
+        } 
+      }
+    }
 
+    _.each(numUndefined, function(item){
+      collection.push(item)
+    })
 
-
-    // // if iterator === 'string' {                    //if iterator is a string, collection is an object
-    // //   for (x in collection) {
-    // //     x[string]
-    // //   }
-    // // }
-
-    return sorted;
-
+    return collection;
   };
+
 
   // Zip together two or more arrays with elements of the same index
   // going together.
@@ -644,6 +661,9 @@ var _ = {};
   //
   // See the Underbar readme for details.
   _.throttle = function(func, wait) {
+
+
+
   };
 
 }).call(this);

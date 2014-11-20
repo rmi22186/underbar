@@ -558,6 +558,13 @@ describe('sortBy', function() {
     expect(result).to.eql([1, 2, 3, 4, undefined, undefined]);
   });
 
+  it('should handle numbers values', function() {
+    var list = [4,5,2,6,3,7,1];
+    var result = _.sortBy(list, function(i) { return i; });
+
+    expect(result).to.eql([1, 2, 3, 4, 5, 6, 7]);
+  });
+
   it('should sort by length', function() {
     var list = ['one', 'two', 'three', 'four', 'five'];
     var sorted = _.sortBy(list, 'length');
