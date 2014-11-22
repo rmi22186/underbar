@@ -552,10 +552,10 @@ describe('sortBy', function() {
   });
 
   it('should handle undefined values', function() {
-    var list = [undefined, 4, 1, undefined, 3, 2];
+    var list = [undefined, 4, 1, undefined, 3, undefined];
     var result = _.sortBy(list, function(i) { return i; });
 
-    expect(result).to.eql([1, 2, 3, 4, undefined, undefined]);
+    expect(result).to.eql([1, 3, 4, undefined, undefined, undefined]);
   });
 
   it('should handle numbers values', function() {

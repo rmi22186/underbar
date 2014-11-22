@@ -515,13 +515,14 @@ var _ = {};
   // of that string. For example, _.sortBy(people, 'name') should sort
   // an array of people by their name.
   _.sortBy = function(collection, iterator) {
-    var numUndefined = []
+    var numUndefined = [];
     
-    _.each(collection, function(item) {
-      if iterator(item) === undefined) {
-        numUndefined.push(collection.splice(i, 1)[0]);
+    
+    _.each(collection, function(item, i) {
+      if (item === undefined) {
+        numUndefined.push(collection.splice(i,1)[0])
       }
-    }
+    })
 
     for (var i = 0; i < collection.length; i++) {
       var target = collection[i];
@@ -661,9 +662,28 @@ var _ = {};
   //
   // See the Underbar readme for details.
   _.throttle = function(func, wait) {
+    var alreadyCalled = false;
 
+    var timeStart = (new Date().getTime());
+    var timeEnd = (timeStart + wait);
 
-
-  };
+    return function() {
+      if (!alreadyCalled) {
+        alreadyCalled = true;
+        console.log('line 674 = ' + alreadyCalled)
+        return func.apply(this,arguments);
+      } else if (alreadyCalled) {
+        var throttledNow = (new Date().getTime());
+          if (throttledNow < timeEnd) {
+            _.delay(func, (throttledNow-timeEnd))
+            console.log('line 680 = ' + alreadyCalled)
+          } else {
+            alreadyCalled = false;
+            console.log('line 683 = ' + alreadyCalled)
+            return func.apply(this,arguments);
+          }
+      }
+    }
+  }
 
 }).call(this);
